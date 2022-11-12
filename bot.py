@@ -30,7 +30,7 @@ async def setup_bot():
                 try:
                     log.info(f'attempting to load {ext}')
                     ext = ext.replace('.py', '')
-                    await bot.load_extension(f'ext.{ext}')
+                    await bot.load_extension(f'cogs.{ext}')
                 except:
                     log.error(f'failed to load {ext}', exc_info=True)
                 else:

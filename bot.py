@@ -4,6 +4,7 @@ from core.bot import HiyorinBot
 from ruamel.yaml import YAML
 from logbook import Logger, StreamHandler, INFO
 from logbook.compat import redirect_logging
+from sys import stdout
 
 redirect_logging()
 StreamHandler(stdout, level=INFO).push_application

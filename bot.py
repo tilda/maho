@@ -9,7 +9,7 @@ import os
 import asyncio
 
 redirect_logging()
-StreamHandler(stdout, level=INFO).push_application
+StreamHandler(stdout, level=INFO).push_application()
 log = Logger("hiyorin")
 
 yaml = YAML()
@@ -20,10 +20,10 @@ bot = HiyorinBot(
     config=config,
     logger=log,
     intents=intents,
-    command_prefix='hiyorin '
+    command_prefix=config['bot']['prefix']
 )
 
-async def run_bot():
+async def setup_bot():
     async with bot:
         for ext in os.listdir('cogs'):
             if ext.endswith('.py'):
@@ -37,7 +37,7 @@ async def run_bot():
                     log.info(f'successfully loaded {ext}')
         log.info('also loading jishaku')
         await bot.load_extension('jishaku')
-        await bot.run(config['bot']['token'])
 
 if __name__ == "__main__":
-    asyncio.run(run_bot())
+    asyncio.run(setup_bot())
+    bot.run(config['bot']['token'])

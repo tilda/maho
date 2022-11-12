@@ -8,10 +8,10 @@ class HiyorinBot(commands.Bot):
         super().__init__(*args, **kwargs)
         self.log = logger
         self.http_session = ClientSession()
-        self.bot_config = config
+        self.config = config
         self.transmission_client = TransmissionClient(
-            host=self.bot_config['transmission']['host'],
-            port=self.bot_config['transmission']['port'],
-            username=self.bot_config['transmission']['username'],
-            password=self.bot_config['transmission']['password']
+            host=self.config['transmission']['host'],
+            port=self.config['transmission']['port'],
+            username=self.config['transmission']['username'],
+            password=self.config['transmission']['password']
         )

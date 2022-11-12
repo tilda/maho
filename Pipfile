@@ -8,6 +8,8 @@ name = "pypi"
 logbook = "*"
 transmission-rpc = "*"
 "ruamel.yaml" = "*"
+jishaku = "*"
+"discord.py-pagination" = "*"
 
 [dev-packages]
 

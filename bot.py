@@ -6,6 +6,7 @@ from logbook import Logger, StreamHandler, INFO
 from logbook.compat import redirect_logging
 from sys import stdout
 import os
+import asyncio
 
 redirect_logging()
 StreamHandler(stdout, level=INFO).push_application
@@ -22,18 +23,21 @@ bot = HiyorinBot(
     command_prefix='hiyorin '
 )
 
-if __name__ == "__main__":
-    for ext in os.listdir("cogs"):
-        if ext.endswith(".py"):
-            try:
-                log.info(f"attempting to load {ext}")
-                ext = ext.replace(".py", "")
-                bot.load_extension(f"ext.{ext}")
-            except Exception:
-                log.error(f"failed to load {ext}", exc_info=True)
-            else:
-                log.info(f"successfully loaded {ext}")
-    log.info("loading jishaku")
-    bot.load_extension("jishaku")
+async def run_bot():
+    async with bot:
+        for ext in os.listdir('cogs'):
+            if ext.endswith('.py'):
+                try:
+                    log.info(f'attempting to load {ext}')
+                    ext = ext.replace('.py', '')
+                    await bot.load_extension(f'ext.{ext}')
+                except:
+                    log.error(f'failed to load {ext}', exc_info=True)
+                else:
+                    log.info(f'successfully loaded {ext}')
+        log.info('also loading jishaku')
+        await bot.load_extension('jishaku')
+    await bot.run(config['bot']['token'])
 
-bot.run(config['bot']['token'])
+if __name__ == "__main__":
+    asyncio.run(run_bot())

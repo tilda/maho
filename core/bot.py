@@ -15,3 +15,9 @@ class HiyorinBot(commands.Bot):
             username=self.config['transmission']['username'],
             password=self.config['transmission']['password']
         )
+    
+    async def setup_hook(self):
+        # Copy global commands to home base and sync, so new commands
+        # are added immediately
+        self.tree.copy_global_to(guild=self.config['bot']['home_base_id'])
+        await self.tree.sync(self.config['bot']['home_base_id'])

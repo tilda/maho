@@ -37,7 +37,8 @@ async def setup_bot():
                     log.info(f'successfully loaded {ext}')
         log.info('also loading jishaku')
         await bot.load_extension('jishaku')
+        await bot.start(config['bot']['token'])
+
 
 if __name__ == "__main__":
     asyncio.run(setup_bot())
-    bot.run(config['bot']['token'])

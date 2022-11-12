@@ -1,4 +1,5 @@
-from discord.ext import commands, app_commands
+from discord.ext import commands
+from discord import app_commands
 import discord
 from aiohttp import ClientSession
 from typing import Literal

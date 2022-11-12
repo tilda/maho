@@ -43,3 +43,5 @@ class AnimeBytes(commands.Cog):
                 await Paginator.Simple().start(ctx, pages=results_embeds)
 
 
+async def setup(bot):
+    await bot.add_cog(AnimeBytes(bot))

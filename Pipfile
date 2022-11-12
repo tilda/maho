@@ -10,5 +10,6 @@ transmission-rpc = "*"
 "ruamel.yaml" = "*"
 jishaku = "*"
 "discord.py-pagination" = "*"
+importlib-metadata = "*"
 
 [dev-packages]

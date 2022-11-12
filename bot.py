@@ -12,10 +12,12 @@ log = Logger("hiyorin")
 
 yaml = YAML()
 config = yaml.load(open('config.yaml').read())
+intents = discord.Intents.default()
+intents.message_content = True
 bot = HiyorinBot(
     config=config,
     logger=log,
-    intents=discord.Intents.default(),
+    intents=intents,
     command_prefix='hiyorin '
 )
 

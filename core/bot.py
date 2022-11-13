@@ -2,10 +2,15 @@ from discord.ext import commands
 from aiohttp import ClientSession
 import discord
 from transmission_rpc import Client as TransmissionClient
+from logbook import Logger, StreamHandler, INFO
+from logbook.compat import redirect_logging
+from sys import stdout
 class HiyorinBot(commands.Bot):
-    def __init__(self, config, logger, *args, **kwargs):
+    def __init__(self, config, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.log = logger
+        redirect_logging()
+        StreamHandler(stdout, level=INFO).push_application()
+        self.log = Logger('hiyorin')
         self.http_session = ClientSession()
         self.config = config
         self.home_base = discord.Object(id=self.config['bot']['home_base_id'])

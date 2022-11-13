@@ -2,15 +2,10 @@ from discord.ext import commands
 import discord
 from core.bot import HiyorinBot
 from ruamel.yaml import YAML
-from logbook import Logger, StreamHandler, INFO
-from logbook.compat import redirect_logging
 from sys import stdout
 import os
 import asyncio
 
-redirect_logging()
-StreamHandler(stdout, level=INFO).push_application()
-log = Logger("hiyorin")
 
 yaml = YAML()
 config = yaml.load(open('config.yaml').read())
@@ -18,7 +13,6 @@ intents = discord.Intents.default()
 intents.message_content = True
 bot = HiyorinBot(
     config=config,
-    logger=log,
     intents=intents,
     command_prefix=config['bot']['prefix']
 )
@@ -28,18 +22,17 @@ async def setup_bot():
         for ext in os.listdir('cogs'):
             if ext.endswith('.py'):
                 try:
-                    log.info(f'attempting to load {ext}')
+                    bot.log.info(f'attempting to load {ext}')
                     ext = ext.replace('.py', '')
                     await bot.load_extension(f'cogs.{ext}')
                 except:
-                    log.error(f'failed to load {ext}', exc_info=True)
+                    bot.log.error(f'failed to load {ext}', exc_info=True)
                 else:
-                    log.info(f'successfully loaded {ext}')
-        log.info('also loading jishaku')
+                    bot.log.info(f'successfully loaded {ext}')
+        bot.log.info('also loading jishaku')
         await bot.load_extension('jishaku')
         await bot.start(config['bot']['token'])
 
 
 if __name__ == "__main__":
-    discord.utils.setup_logging()
     asyncio.run(setup_bot())

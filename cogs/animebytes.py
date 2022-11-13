@@ -10,7 +10,7 @@ class AnimeBytes(commands.Cog):
         self.bot = bot
 
     @app_commands.command()
-    @app_commands.describe(type='Category to search in. Anime contains most things')
+    @app_commands.describe(search_type='Category to search in. Anime contains most things')
     async def ablookup(self, ctx, lookup: str, search_type: Literal['anime', 'music']):
         def process_links(links):
             links_list = ''

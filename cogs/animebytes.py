@@ -43,6 +43,7 @@ class AnimeBytes(commands.Cog):
                             description=f'*{results["Description"]}*',
                             color=0x69d1c5)
                         
+                    self.bot.log.info(len(results["Description"]))
                     embed.add_field(name='Links', value=process_links(results))
                     embed.set_footer(text=f'Category: {results["CategoryName"]}, ID: {results["ID"]}')
                     results_embeds.append(embed)

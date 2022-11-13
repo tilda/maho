@@ -41,4 +41,5 @@ async def setup_bot():
 
 
 if __name__ == "__main__":
+    discord.utils.setup_logging()
     asyncio.run(setup_bot())

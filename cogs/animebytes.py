@@ -28,7 +28,7 @@ class AnimeBytes(commands.Cog):
                     results_amount = search['Results']
                     search_results = search['Groups']
                 except:
-                    return await ctx.send('Could not get results. Likely was not able to find what you were looking for.')
+                    return await ctx.response.send_message('Could not get results. Likely was not able to find what you were looking for.')
 
                 results_embeds = []
                 for results in search_results:

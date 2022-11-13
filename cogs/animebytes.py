@@ -4,6 +4,7 @@ import discord
 from aiohttp import ClientSession
 from typing import Literal
 import Paginator
+from textwrap import shorten
 
 class AnimeBytes(commands.Cog):
     def __init__(self, bot):
@@ -39,10 +40,10 @@ class AnimeBytes(commands.Cog):
                 results_embeds = []
                 for results in search_results:
                     embed = discord.Embed(
-                            title=results['FullName'],
-                            description=f'*{results["Description"]}*',
-                            color=0x69d1c5)
-                        
+                        title=results['FullName'],
+                        description=f'{shorten(results["Description"], width=240, placeholder="...")}',
+                        color=0x69d1c5
+                    )
                     self.bot.log.info(len(results["Description"]))
                     embed.add_field(name='Links', value=process_links(results))
                     embed.set_footer(text=f'Category: {results["CategoryName"]}, ID: {results["ID"]}')

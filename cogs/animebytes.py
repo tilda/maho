@@ -5,6 +5,7 @@ from aiohttp import ClientSession
 from typing import Literal
 import Paginator
 from textwrap import shorten
+from html import unescape
 
 class AnimeBytes(commands.Cog):
     def __init__(self, bot):
@@ -13,17 +14,14 @@ class AnimeBytes(commands.Cog):
     @app_commands.command()
     @app_commands.describe(search_type='Category to search in. Anime contains most things')
     async def ablookup(self, ctx, lookup: str, search_type: Literal['anime', 'music']):
-        def process_links(links):
-            links_list = ''
-            for title, link in links.items():
-                links_list += f'[{title}]({link})'
-            return links_list
+        def process_links(results):
+            return ', '.join(f'[{title}]({link})' for title, link in results["Links"].items())
 
 
         # https://animebytes.tv/scrape.php?torrent_pass={:passkey}&username={:username}&type={:type[music|anime]}
         async with ClientSession() as http:
             async with http.get(
-                    f'https://animebytes.tv/scrape.php', params={
+                    'https://animebytes.tv/scrape.php', params={
                         'torrent_pass': self.bot.config["services"]["animebytes"],
                         'username': self.bot.config["services"]["animebytes_username"],
                         'searchstr': lookup,
@@ -40,12 +38,17 @@ class AnimeBytes(commands.Cog):
                 results_embeds = []
                 for results in search_results:
                     embed = discord.Embed(
-                        title=results['FullName'],
-                        description=f'{shorten(results["Description"], width=240, placeholder="...")}',
+                        title=unescape(results['FullName']),
+                        description=f'{shorten(results["Description"], width=320, placeholder="...")}',
                         color=0x69d1c5
                     )
-                    self.bot.log.info(len(results["Description"]))
-                    embed.add_field(name='Links', value=process_links(results))
+                    try:
+                        links = process_links(results)
+                    except: 
+                        pass # we likely don't have links so fall back
+                    else:
+                        embed.add_field(name='Links', value=process_links(results))
+                    embed.set_thumbnail(url=results["Image"])
                     embed.set_footer(text=f'Category: {results["CategoryName"]}, ID: {results["ID"]}')
                     results_embeds.append(embed)
 

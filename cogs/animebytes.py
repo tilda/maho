@@ -11,7 +11,7 @@ class AnimeBytes(commands.Cog):
 
     @app_commands.command()
     @app_commands.describe(type='Category to search in. Anime contains most things')
-    async def ablookup(self, ctx, lookup: str, type: Literal['anime', 'music']):
+    async def ablookup(self, ctx, lookup: str, search_type: Literal['anime', 'music']):
         def process_links(links):
             links_list = ''
             for title, link in links.items():
@@ -21,7 +21,13 @@ class AnimeBytes(commands.Cog):
 
         # https://animebytes.tv/scrape.php?torrent_pass={:passkey}&username={:username}&type={:type[music|anime]}
         async with ClientSession() as http:
-            async with http.get(f'https://animebytes.tv/scrape.php?torrent_pass={self.bot.config["services"]["animebytes"]}&username={self.bot.config["services"]["animebytes_username"]}&GroupName={lookup}') as ab:
+            async with http.get(
+                    f'https://animebytes.tv/scrape.php', params={
+                        'torrent_pass': self.bot.config["services"]["animebytes"],
+                        'username': self.bot.config["services"]["animebytes_username"],
+                        'searchstr': lookup,
+                        'type': search_type
+                    }) as ab:
                 try:
                     search = await ab.json()
                     matches = search['Matches']

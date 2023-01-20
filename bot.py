@@ -1,6 +1,6 @@
 from discord.ext import commands
 import discord
-from core.bot import HiyorinBot
+from core.bot import MahoBot
 from ruamel.yaml import YAML
 from sys import stdout
 import os
@@ -11,7 +11,7 @@ yaml = YAML()
 config = yaml.load(open('config.yaml').read())
 intents = discord.Intents.default()
 intents.message_content = True
-bot = HiyorinBot(
+bot = MahoBot(
     config=config,
     intents=intents,
     command_prefix=config['bot']['prefix']
@@ -25,7 +25,7 @@ async def setup_bot():
                     bot.log.info(f'attempting to load {ext}')
                     ext = ext.replace('.py', '')
                     await bot.load_extension(f'cogs.{ext}')
-                except:
+                except Exception:
                     bot.log.error(f'failed to load {ext}', exc_info=True)
                 else:
                     bot.log.info(f'successfully loaded {ext}')

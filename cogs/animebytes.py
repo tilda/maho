@@ -1,11 +1,13 @@
-from discord.ext import commands
-from discord import app_commands
-import discord
-from aiohttp import ClientSession
-from typing import Literal
-import Paginator
-from textwrap import shorten
 from html import unescape
+from textwrap import shorten
+from typing import Literal
+
+import discord
+import Paginator
+from aiohttp import ClientSession
+from discord import app_commands
+from discord.ext import commands
+
 
 class AnimeBytes(commands.Cog):
     def __init__(self, bot):
@@ -17,8 +19,6 @@ class AnimeBytes(commands.Cog):
         def process_links(results):
             return ', '.join(f'[{title}]({link})' for title, link in results["Links"].items())
 
-
-        # https://animebytes.tv/scrape.php?torrent_pass={:passkey}&username={:username}&type={:type[music|anime]}
         async with ClientSession() as http:
             async with http.get(
                     'https://animebytes.tv/scrape.php', params={

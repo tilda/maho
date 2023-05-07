@@ -6,10 +6,10 @@ name = "pypi"
 [packages]
 "discord.py" = "*"
 logbook = "*"
-transmission-rpc = "*"
 "ruamel.yaml" = "*"
 jishaku = "*"
 "discord.py-pagination" = "*"
 importlib-metadata = "*"
+gracy = "*"
 
 [dev-packages]

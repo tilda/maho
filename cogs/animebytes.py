@@ -6,24 +6,27 @@ import discord
 import Paginator
 from aiohttp import ClientSession
 from discord import app_commands
-from discord.ext import commands
+from core.cog import Cog
 
 
-class AnimeBytes(commands.Cog):
+class AnimeBytes(Cog):
     def __init__(self, bot):
         self.bot = bot
 
     @app_commands.command()
     @app_commands.describe(search_type='Category to search in. Anime contains most things')
     async def ablookup(self, ctx, lookup: str, search_type: Literal['anime', 'music']):
+        """
+        Searches for media on AnimeBytes.
+        """
         def process_links(results):
             return ', '.join(f'[{title}]({link})' for title, link in results["Links"].items())
 
         async with ClientSession() as http:
             async with http.get(
                     'https://animebytes.tv/scrape.php', params={
-                        'torrent_pass': self.bot.config["services"]["animebytes"],
-                        'username': self.bot.config["services"]["animebytes_username"],
+                        'torrent_pass': self.config["services"]["animebytes"],
+                        'username': self.config["services"]["animebytes_username"],
                         'searchstr': lookup,
                         'type': search_type
                     }) as ab:
@@ -32,7 +35,7 @@ class AnimeBytes(commands.Cog):
                     matches = search['Matches']
                     results_amount = search['Results']
                     search_results = search['Groups']
-                except:
+                except Exception:
                     return await ctx.response.send_message('Could not get results. Likely was not able to find what you were looking for.')
 
                 results_embeds = []
@@ -44,10 +47,10 @@ class AnimeBytes(commands.Cog):
                     )
                     try:
                         links = process_links(results)
-                    except: 
+                    except Exception: 
                         pass # we likely don't have links so fall back
                     else:
-                        embed.add_field(name='Links', value=process_links(results))
+                        embed.add_field(name='Links', value=links)
                     embed.set_thumbnail(url=results["Image"])
                     embed.set_footer(text=f'Category: {results["CategoryName"]}, ID: {results["ID"]}')
                     results_embeds.append(embed)

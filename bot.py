@@ -22,8 +22,8 @@ async def setup_bot():
         for ext in os.listdir('cogs'):
             if ext.endswith('.py'):
                 try:
-                    bot.log.info(f'attempting to load {ext}')
                     ext = ext.replace('.py', '')
+                    bot.log.info(f'attempting to load {ext}')
                     await bot.load_extension(f'cogs.{ext}')
                 except Exception:
                     bot.log.error(f'failed to load {ext}', exc_info=True)

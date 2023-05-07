@@ -1,10 +1,10 @@
 from discord.ext import commands
 from aiohttp import ClientSession
 import discord
-from transmission_rpc import Client as TransmissionClient
 from logbook import Logger, StreamHandler, INFO
 from logbook.compat import redirect_logging
 from sys import stdout
+from core.models.prowlarr_api import ProwlarrAPIWrapper
 
 class MahoBot(commands.Bot):
     def __init__(self, config, *args, **kwargs):
@@ -15,15 +15,4 @@ class MahoBot(commands.Bot):
         self.http_session = ClientSession()
         self.config = config
         self.home_base = discord.Object(id=self.config['bot']['home_base_id'])
-        self.transmission_client = TransmissionClient(
-            host=self.config['transmission']['host'],
-            port=self.config['transmission']['port'],
-            username=self.config['transmission']['username'],
-            password=self.config['transmission']['password']
-        )
-    
-    async def setup_hook(self):
-        # Copy global commands to home base and sync, so new commands
-        # are added immediately
-        self.tree.copy_global_to(guild=self.home_base)
-        await self.tree.sync(guild=self.home_base)
+        self.prowlarr_client = ProwlarrAPIWrapper(self.config['prowlarr']['host'], self.config['prowlarr']['api_key'])

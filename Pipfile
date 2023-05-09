@@ -12,5 +12,6 @@ jishaku = "*"
 importlib-metadata = "*"
 gracy = "*"
 sqlalchemy = {extras = ["asyncio"], version = "*"}
+aiosqlite = "*"
 
 [dev-packages]

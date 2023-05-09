@@ -11,5 +11,6 @@ jishaku = "*"
 "discord.py-pagination" = "*"
 importlib-metadata = "*"
 gracy = "*"
+sqlalchemy = {extras = ["asyncio"], version = "*"}
 
 [dev-packages]

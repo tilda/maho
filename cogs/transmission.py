@@ -19,10 +19,9 @@ class Transmission(Cog):
             async with asyncio.timeout(10):
                 await self.bot.loop.run_in_executor(
                     None,
-                    self.bot.transmission_client.add_torrent(
-                        torrent=torrent_file.url,
-                        labels=label
-                    )
+                    self.bot.transmission_client.add_torrent,
+                    torrent=torrent_file.url,
+                    labels=label
                 )
         except TimeoutError:
             return await progress.edit(content='Request timed out. Did something catch on fire?')

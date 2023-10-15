@@ -8,7 +8,7 @@ this is my personal discord bot. it's intended for my personal use - source code
 
 - animebytes search
 - (planned) downloading said search results from the comfort of discord
-- some [priconne mapping](https://pcr.til.pm) specific stuff
+- some general management for [transmission](https://transmissionbt.com) servers
 
 # license
 
